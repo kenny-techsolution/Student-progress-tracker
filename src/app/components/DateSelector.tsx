@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
-import axios from "axios";
 
 interface DateSelectorProps {
   onSelect: (date: number) => void;

@@ -1,33 +1,28 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
-import { notification, Spin, Form, Space, Card, Checkbox, Avatar } from "antd";
+import { useEffect, useState } from "react";
+import { notification, Spin, Avatar } from "antd";
 import { CheckOutlined, LoadingOutlined } from "@ant-design/icons";
 import templateA from "./templateA";
 import DateSelector from "./DateSelector";
 // import { EditOutlined } from "@ant-design/icons";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { DatePicker } from "antd";
+import ProgressForm, { Section } from "./ProgressForm";
+import DynamicForm from "./DynamicForm";
 
 interface EditProgressProps {
   studentId: string | null;
   studentName: string | null;
 }
 
-interface Section {
-  name: string;
-  content: Array<{ name: string; type: string; done: boolean }>;
-}
-
-type Log = any;
-
 // Deep clone function
-const deepClone = (obj: any) => {
+const deepClone = (obj: unknown) => {
   return JSON.parse(JSON.stringify(obj));
 };
 
-const getDateString = (timestamp: number) => {
-  const options = {
+const getDateString = (timestamp: number): string => {
+  const options: Intl.DateTimeFormatOptions = {
     timeZone: "Asia/Taipei",
     year: "numeric",
     month: "2-digit",
@@ -65,8 +60,6 @@ const EditProgress = ({ studentId, studentName }: EditProgressProps) => {
       setLogExist(true);
       setFormState(logsResponse.data.log);
     } catch (error) {
-      const axiosError = error as AxiosError;
-
       const templateClone = deepClone(templateA);
       setFormState(templateClone);
       setLogExist(false);
@@ -123,63 +116,6 @@ const EditProgress = ({ studentId, studentName }: EditProgressProps) => {
     saveLog();
   };
 
-  const DynamicForm = ({
-    formState,
-    handleCheckboxChange,
-  }: {
-    formState: Section[];
-    handleCheckboxChange: (sectionIndex: number, contentIndex: number) => void;
-  }) => {
-    return (
-      <div className="p-4">
-        <Form layout="vertical" className="full-width">
-          <div className="grid grid-cols-2 gap-4 h-62">
-            {formState.map((section, sectionIndex) => (
-              <Space
-                key={sectionIndex}
-                direction="vertical"
-                size="middle"
-                style={{ display: "flex" }}
-              >
-                <Card bordered={true} size="default">
-                  <Card.Meta
-                    title={section.name}
-                    avatar={
-                      <Avatar
-                        shape="square"
-                        src="https://www.svgrepo.com/show/513272/book-closed.svg"
-                      />
-                    }
-                  />
-                  <div className="m-6">
-                    {/* Section title */}
-
-                    {/* Section content */}
-                    {section.content.map((item, contentIndex) => (
-                      <Form.Item key={contentIndex} className="mb-2">
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            checked={item.done}
-                            onChange={() =>
-                              handleCheckboxChange(sectionIndex, contentIndex)
-                            }
-                          />
-                          <span className="text-l font-bold font-grey-400">
-                            {item.name}
-                          </span>
-                        </div>
-                      </Form.Item>
-                    ))}
-                  </div>
-                </Card>
-              </Space>
-            ))}
-          </div>
-        </Form>
-      </div>
-    );
-  };
-
   useEffect(() => {
     // when it fetches studentsId for a given date.
     //if there is no data, then use the template to render the page.
@@ -204,7 +140,7 @@ const EditProgress = ({ studentId, studentName }: EditProgressProps) => {
             S
           </Avatar>
           <div className="text-xl text-center align-middle">
-            {studentName}'s Progress
+            {studentName}&apos;s Progress
           </div>
           {/* <SmileOutlined className="text-3xl text-green-500" /> */}
           <CheckOutlined className="text-2xl text-green-500" />
@@ -212,7 +148,7 @@ const EditProgress = ({ studentId, studentName }: EditProgressProps) => {
         <DateSelector
           onSelect={(date) => {
             console.log(getDateString(date));
-            setCurrentTime((prev) => date);
+            setCurrentTime(() => date);
           }}
         />
         <DatePicker />
@@ -226,10 +162,11 @@ const EditProgress = ({ studentId, studentName }: EditProgressProps) => {
         </div>
       ) : (
         <div>
-          <DynamicForm
+          {/* <ProgressForm
             formState={formState}
             handleCheckboxChange={handleCheckboxChange}
-          />
+          /> */}
+          <DynamicForm />
         </div>
       )}
     </div>

@@ -14,7 +14,7 @@ interface Log {
   _id: string;
   logDate: string;
   logTimestamp: string;
-  log: any; // Can be any type of log
+  log: unknown; // Can be unknown type of log
 }
 
 const StudentsPage = () => {
@@ -77,7 +77,7 @@ const StudentsPage = () => {
     {
       title: "Action",
       key: "action",
-      render: (_: any, student: Student) => (
+      render: (_: unknown, student: Student) => (
         <Button
           onClick={() => {
             setDrawerVisible(true);

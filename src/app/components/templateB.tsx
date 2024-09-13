@@ -1,9 +1,25 @@
-const templateB: any[] = [
+export interface Progress {
+  material: string | null;
+  status: "review" | "complete" | "N/A";
+}
+export interface ProgressItem {
+  name: string;
+  level: "K0" | "K1" | "K2" | "K3" | "ALL";
+  formType: string;
+  formOptions: string[];
+  progress: Progress;
+}
+export interface ProgressCategory {
+  name: string;
+  items: ProgressItem[];
+}
+const templateB: ProgressCategory[] = [
   {
-    category: "Work Book",
+    name: "Work Book",
     items: [
       {
-        name: "Work Book",
+        name: "K0 Work Book",
+        level: "K0",
         formType: "select",
         formOptions: [
           "K0_MSB_Sticker_Book",
@@ -12,28 +28,33 @@ const templateB: any[] = [
           "K0_Sight_Words_2",
         ],
         progress: {
-          selection: "K0_MSB_Sticker_Book",
-          progress: "need review",
+          material: "K0_MSB_Sticker_Book",
+          status: "review",
         },
       },
     ],
   },
   {
-    category: "SIE",
+    name: "Short Vowels",
     items: [
       {
-        name: "My Sound book",
-        formType: "selectWithInput",
-        formOptions: [
-          "K0_MSB_Sticker_Book",
-          "K0_MSB_Tracing_Letter",
-          "K0_Sight_Words_1",
-          "K0_Sight_Words_2",
-        ],
+        name: "Short Vowels Box 1",
+        level: "K1",
+        formType: "select",
+        formOptions: ["a", "e", "i", "o", "u"],
         progress: {
-          selection: "K0_MSB_Sticker_Book",
-          comment: "book read",
-          progress: "incompleted",
+          material: null,
+          status: null,
+        },
+      },
+      {
+        name: "Short Vowels Box 2",
+        level: "K2",
+        formType: "select",
+        formOptions: ["a", "e", "i", "o", "u"],
+        progress: {
+          material: null,
+          status: null,
         },
       },
     ],
